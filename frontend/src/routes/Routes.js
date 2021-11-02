@@ -7,38 +7,39 @@ import JobList from "../jobs/JobList";
 import LoginForm from "../auth/LoginForm";
 import SignUpForm from "../auth/SignUpForm";
 import ProfileForm from "../users/ProfileForm";
+import ProtectedRoutes from "./ProtectedRoutes";
 
-const Routes = () => {
+const Routes = ({ login, signup }) => {
   return (
-    <div>
+    <div className="pt-5">
       <Switch>
         <Route exact path="/">
           <Homepage />
         </Route>
 
-        <Route exact path="/companies">
-          <CompanyList />
-        </Route>
-
-        <Route exact path="/companies/:handle">
-          <CompanyDetail />
-        </Route>
-
-        <Route exact path="/jobs">
-          <JobList />
-        </Route>
-
         <Route exact path="/login">
-          <LoginForm />
+          <LoginForm login={login} />
         </Route>
 
         <Route exact path="/signup">
-          <SignUpForm />
+          <SignUpForm signup={signup} />
         </Route>
 
-        <Route exact path="/profile">
+        <ProtectedRoutes exact path="/companies">
+          <CompanyList />
+        </ProtectedRoutes>
+
+        <ProtectedRoutes exact path="/jobs">
+          <JobList />
+        </ProtectedRoutes>
+
+        <ProtectedRoutes exact path="/companies/:handle">
+          <CompanyDetail />
+        </ProtectedRoutes>
+
+        <ProtectedRoutes path="/profile">
           <ProfileForm />
-        </Route>
+        </ProtectedRoutes>
 
         <Redirect to="/" />
       </Switch>

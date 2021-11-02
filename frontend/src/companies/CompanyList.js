@@ -2,10 +2,16 @@ import React, { useState, useEffect } from "react";
 import SearchForm from "../common/SearchForm";
 import JoblyApi from "../api";
 import LoadingComponent from "../common/LoadingPage";
-import ComanyCard from "./CompanyCard";
 import CompanyCard from "./CompanyCard";
 
-const CompanyList = () => {
+/** Component that returns all companys
+ *
+ * Children Components: CompanyCard, SearchForm
+ */
+
+function CompanyList() {
+  console.debug("CompanyList");
+
   const [companies, setCompanies] = useState(null);
 
   useEffect(function getCompaniesOnMount() {
@@ -22,28 +28,27 @@ const CompanyList = () => {
 
   if (!companies) return <LoadingComponent />;
 
-  // map through companies and create card components for them
-  let companiesList = (
-    <div className="CompanyList-list ">
-      {companies.map((company) => (
-        <CompanyCard
-          key={company.handle}
-          handle={company.handle}
-          name={company.name}
-          description={company.description}
-          logoUrl={company.logoUrl}
-        />
-      ))}
-    </div>
-  );
-
   return (
     <div className="CompanyList col-md-8 offset-md-2">
       {/* pass down search function */}
       <SearchForm searchFor={search} />
-      {companies.length ? companiesList : <p>Sorry, no results were found.</p>}
+      {companies.length ? ( // map through companies and create card components for them
+        <div className="CompanyList-list">
+          {companies.map((company) => (
+            <CompanyCard
+              key={company.handle}
+              handle={company.handle}
+              name={company.name}
+              description={company.description}
+              logoUrl={company.logoUrl}
+            />
+          ))}
+        </div>
+      ) : (
+        <p className="lead">Sorry, no results were found!</p>
+      )}
     </div>
   );
-};
+}
 
 export default CompanyList;

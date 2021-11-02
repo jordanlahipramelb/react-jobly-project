@@ -1,9 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import "./CompanyCard.css";
 
 /** Card component showing snapshot information about each company.
  *
- * Rendered by CompanyList
+ * Child of CompanyList
+ *
+ * CompanyList -> CompanyCard
  */
 
 const CompanyCard = ({ handle, name, description, logoUrl }) => {
@@ -12,9 +15,9 @@ const CompanyCard = ({ handle, name, description, logoUrl }) => {
       <div className="card-body">
         <h6 className="card-title">
           {name}
-          {/* {logoUrl && (
+          {logoUrl && (
             <img src={logoUrl} alt={name} className="float-right ml-5" />
-          )} */}
+          )}
         </h6>
         <p>
           <small>{description}</small>

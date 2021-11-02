@@ -1,13 +1,10 @@
 import React from "react";
+import "./LoadingPage.css";
 
 /** Returns Loading when API is called. */
 
-const LoadingPage = () => {
-  return (
-    <div>
-      <h1>Loading...</h1>
-    </div>
-  );
-};
+function LoadingPage() {
+  return <div className="LoadingPage">Loading ...</div>;
+}
 
 export default LoadingPage;

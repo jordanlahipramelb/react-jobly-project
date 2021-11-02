@@ -1,11 +1,8 @@
-//* Custom formfields Hook
-
-//! Now you don't have to write handleChange and resetForm over and over
-
 import { useState } from "react";
 
 const useFields = (initialState) => {
   const [formData, setFormData] = useState(initialState);
+  const [errors, setErrors] = useState([]);
 
   //   handle setting form data
   const handleChange = (evt) => {
@@ -21,7 +18,6 @@ const useFields = (initialState) => {
     setFormData(initialState);
   };
 
-  //! Return original/initial state and the function(s) created
   return [formData, handleChange, resetFormData];
 };
 

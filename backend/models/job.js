@@ -40,7 +40,6 @@ class Job {
    * */
 
   static async findAll({ minSalary, hasEquity, title } = {}) {
-    //join jobs table with company table matching jobs.company_handle and company.handle
     let query = `SELECT j.id,
                         j.title,
                         j.salary,
@@ -49,15 +48,14 @@ class Job {
                         c.name AS "companyName"
                  FROM jobs j 
                    LEFT JOIN companies AS c ON c.handle = j.company_handle`;
-    let whereExpressions = []; // WHERE SQL queries
-    let queryValues = []; // the values of the above queries
+    let whereExpressions = [];
+    let queryValues = [];
 
     // For each possible search term, add to whereExpressions and
     // queryValues so we can generate the right SQL
 
     if (minSalary !== undefined) {
       queryValues.push(minSalary);
-      // array number of the above query value in order to match with it when querying
       whereExpressions.push(`salary >= $${queryValues.length}`);
     }
 
@@ -66,11 +64,10 @@ class Job {
     }
 
     if (title !== undefined) {
-      queryValues.push(`%${title}%`); // search for characters of title between words
-      whereExpressions.push(`title ILIKE $${queryValues.length}`); // pushes case-insensitive title to array
+      queryValues.push(`%${title}%`);
+      whereExpressions.push(`title ILIKE $${queryValues.length}`);
     }
 
-    // if there is something in the array, join the query SQL statement with WHERE and AND between each value of the array
     if (whereExpressions.length > 0) {
       query += " WHERE " + whereExpressions.join(" AND ");
     }
@@ -106,7 +103,6 @@ class Job {
 
     if (!job) throw new NotFoundError(`No job: ${id}`);
 
-    // get results of companies matching job companyHandles
     const companiesRes = await db.query(
       `SELECT handle,
                   name,
@@ -115,11 +111,11 @@ class Job {
                   logo_url AS "logoUrl"
            FROM companies
            WHERE handle = $1`,
-      [job.companyHandle] //company_handle from jobRes
+      [job.companyHandle]
     );
 
     delete job.companyHandle;
-    job.company = companiesRes.rows[0]; //create column into job with companies from companiesRes
+    job.company = companiesRes.rows[0];
 
     return job;
   }
